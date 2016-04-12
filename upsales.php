@@ -8,7 +8,7 @@
 		private $upsales_user = '';
 		private $upsales_pw = '';
 
-		private $upsales_headers = array('Content-Type: application/json');
+		private $upsales_headers = array('Content-Type: application/json','Accept-Encoding: utf-8');
 		private $upsalesAccountID = '';
 		private $sessionToken="";
 		private $baseURL="https://power.upsales.com/api/v2/";
@@ -124,6 +124,17 @@
 			
 		}
 
+		// Used to get email clicks, web site visits etc.
+
+		public function getEvents($params) {
+
+			$upsalesParams = array("q"=>$params);
+
+			return $response = $this->upsalesCurl("GET","events",$upsalesParams);
+			
+		}
+
+
 		public function updateAccount($id, $data=array()) {
 
 			return $response = $this->upsalesCurl("PUT", "accounts", array("id" => $id), $data);
@@ -157,6 +168,7 @@
 				$url = $this->baseURL . $endpoint . "/" . $id . "/?token=" . $this->sessionToken;
 
 			}
+
 			if($params && is_array($params) && ($method == "POST" || $method =="GET")) {
 
 				foreach ($params as $key => $value) {
